@@ -53,4 +53,5 @@ int main (int argc, char *argv[] ) {
     printf("%d\n", stack_pop(s));
     printf("%d\n", stack_pop(s));
     
+    stack_free(s);
 }
