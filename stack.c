@@ -5,10 +5,10 @@
 
 // Initialize a new stack
 struct Stack stack_init() {
-    struct Stack s;
-    s.stack_size = 2;
-    s.stack_top = -1;
-    s.stack_states = malloc(sizeof(State) * 2);
+    struct Stack s = {2, -1, malloc(sizeof(State) * 2)};
+    // s.stack_size = 2;
+    // s.stack_top = -1;
+    // s.stack_states = malloc(sizeof(State) * 2);
 
     return s;
 }
@@ -37,7 +37,6 @@ State stack_pop(struct Stack *s) {
     }
     
     // Get the state at the top of the stack.
-    printf("Where is it popping: %i\n", s->stack_top);
     State st = *(s->stack_states + s->stack_top);
 
     // If the top of the stack is below half of the allocated memory we should reallocate
