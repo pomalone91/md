@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define STACK_SIZE 10
+
 // Element Types
 typedef enum {
     P,
@@ -24,14 +26,14 @@ typedef enum {
 typedef struct Element
 {
     int ec;         // Count of sub elements
-    State *state;
+    Stack *states;
     struct Element *prev_el;
     struct Element *next_el;
     char *str;
 } Element;
 
 // Functions
-Element* element_init(const char *str, State st);
+Element* element_init(const char *str, size_t str_len, Stack *st);
 Element* element_get_first_sub_element(Element *e);
 void element_free(Element *e);
 

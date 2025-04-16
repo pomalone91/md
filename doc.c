@@ -74,10 +74,14 @@ Doc* doc_init(char *str) {
             }
 
             char* el_str = malloc(sizeof(char) * (doc_len - j));
-            strncpy(el_str, str+i, j - i);
+            
+            // Copy from where i is to where j found the end. Offset by the symbol length so we don't copy #s and such into the string. 
+            strncpy(el_str, str + i + syb_len, j - i);
             // Initialize element
             // Need to capture an array of states in the element since you could have nested states
-            Element *e = element_init(el_str, stack);
+            // TODO - change it so elements have an array of stacks and the init copies the passed stack to that element. 
+            // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
+            Element *e = element_init(el_str, strlen(el_str), stack);
             d->element = e;
             d->ec++;
 
