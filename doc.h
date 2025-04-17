@@ -3,11 +3,12 @@
 
 #include <stdio.h>
 #include <element.h>
+#include "el_array.h"
 
 // Types
 typedef struct Doc {
     char *str;
-    Element *element;   // Pointer to first element in the doc
+    ElArray ea;   // Pointer to first element in the doc
     int ec; // Number of elements
 } Doc;
 

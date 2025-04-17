@@ -43,7 +43,8 @@ bool is_special_char(char c) {
 
 Doc* doc_init(char *str) {
     Doc *d = malloc(sizeof(Doc));
-    d->element = malloc(sizeof(Element));
+    // d->element = malloc(sizeof(Element));
+    d->ea = el_array_init();
     Stack *stack = malloc(sizeof(Stack));
     *stack = stack_init();
     size_t doc_len = strlen(str);
@@ -57,9 +58,8 @@ Doc* doc_init(char *str) {
     int i = 0;
     int j = 0;
     int syb_len = 0;    // 0 for paragraphs, 1 for #, 2 for ## etc.
-    bool found_end = false;
-
-    while (str[i] != '\0' || !found_end)
+    
+    while (str[i] != '\0')
     {
         // Handle paragraphs
         if (!is_special_char(str[i]) && stack->stack_top < 0) {
@@ -79,29 +79,27 @@ Doc* doc_init(char *str) {
             strncpy(el_str, str + i + syb_len, j - i);
             // Initialize element
             // Need to capture an array of states in the element since you could have nested states
-            // TODO - change it so elements have an array of stacks and the init copies the passed stack to that element. 
             // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
             Element *e = element_init(el_str, strlen(el_str), stack);
 
-            // TODO - Add element to array of elements. I need to create "element_array"
-            if (d->ec == 0)
-            {
-                d->element = e;
-                d->ec++;
-            }
-            
+            el_array_append(&d->ea, *e);
+            d->ec++;
 
-            
-            
-
+            // Reset indices and continue loop. i now points past the end of that last element
+            i = j++;
+            j = 0;
+            syb_len = 0;
         } 
     }
 }
 
 Doc* doc_get_first_element(Doc *d) {
-
+    // TODO
 }
 
 void doc_free(Doc *d) {
-
+    el_array_free(&d->ea);
+    d->ec = 0;
+    free(d->str);
+    free(d);
 }
