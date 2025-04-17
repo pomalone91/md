@@ -56,12 +56,11 @@ Element* element_init(const char *str, size_t str_len, Stack *st) {
     strcpy(e->str,str);
 
     // Do stack stuff.
-    e->states = malloc(sizeof(Stack));
     e->states = stack_init();
 
     for (int i = 0; i < st->stack_top; i++)
     {
-        stack_push(e->states, *(st->stack_states + i));
+        stack_push(&e->states, *(st->stack_states + i));
     }
 
     return e;

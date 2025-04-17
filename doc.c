@@ -82,8 +82,17 @@ Doc* doc_init(char *str) {
             // TODO - change it so elements have an array of stacks and the init copies the passed stack to that element. 
             // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
             Element *e = element_init(el_str, strlen(el_str), stack);
-            d->element = e;
-            d->ec++;
+
+            // TODO - Add element to array of elements. I need to create "element_array"
+            if (d->ec == 0)
+            {
+                d->element = e;
+                d->ec++;
+            }
+            
+
+            
+            
 
         } 
     }

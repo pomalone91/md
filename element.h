@@ -26,7 +26,7 @@ typedef enum {
 typedef struct Element
 {
     int ec;         // Count of sub elements
-    Stack *states;
+    Stack states;
     struct Element *prev_el;
     struct Element *next_el;
     char *str;
