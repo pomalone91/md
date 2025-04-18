@@ -14,7 +14,7 @@ typedef struct Doc {
 
 // Functions
 Doc* doc_init(char *str);
-Doc* doc_get_first_element(Doc *d);
+Element* doc_get_first_element(Doc *d);
 void doc_free(Doc *d);
 
 #endif /*doc_h*/

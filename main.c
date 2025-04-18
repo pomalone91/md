@@ -11,7 +11,8 @@ int main (int argc, char *argv[] ) {
 
     for (int i = 0; i < d->ec; i++)
     {   
-        // TODO - Create some function that prints the states for each element
+        Element *e = doc_get_first_element(d);
+        stack_dump_states(&e->states);
     }
     
 }

@@ -20,6 +20,6 @@ void stack_push(Stack *s, State st);
 State stack_pop(Stack *s);
 State stack_peek(Stack *s);
 void stack_free(Stack *s);
-
+void stack_dump_states(Stack *s);
 
 #endif /*stack_h*/

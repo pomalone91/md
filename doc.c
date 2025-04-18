@@ -93,8 +93,8 @@ Doc* doc_init(char *str) {
     }
 }
 
-Doc* doc_get_first_element(Doc *d) {
-    // TODO
+Element* doc_get_first_element(Doc *d) {
+    return d->ea.element;
 }
 
 void doc_free(Doc *d) {

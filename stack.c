@@ -68,3 +68,11 @@ void stack_free(struct Stack *s) {
     // Free the pointer to the array
     free(s->stack_states);
 }
+
+void stack_dump_states(Stack *s) {
+    for (int i = 0; i < s->stack_top; i++)
+    {
+        State st = *(s->stack_states+i);
+        printf("%d\n", st);
+    }
+}
