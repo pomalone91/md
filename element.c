@@ -5,40 +5,6 @@
 #include "element.h"
 #include "stack.h"
 
-bool is_special_char(char c) {
-    bool special;
-    switch (c)
-    {
-    case '#':
-        special = true;
-        break;
-    case '\n':
-        special = true;
-        break;
-    case '*':
-        special = true;
-        break;
-    case '[':
-        special = true;
-        break;
-    case ']':
-        special = true;
-        break;
-    case '(':
-        special = true;
-        break;
-    case ')':
-        special = true;
-        break;
-    case '_':
-        special = true;
-    default:
-        special = false;
-        break;
-    }
-    return special;
-}
-
 // Initialize new element
 /*
     This doesn't actually really need an algorithm. It only needs to do two things.
@@ -64,4 +30,13 @@ Element* element_init(const char *str, size_t str_len, Stack *st) {
     }
 
     return e;
+}
+
+void element_free(Element *e) {
+    e->ec = 0;
+    e->next_el = NULL;
+    e->prev_el = NULL;
+    stack_free(&e->states);
+    free(e->str);
+    free(e);
 }

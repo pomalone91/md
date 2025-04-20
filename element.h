@@ -2,11 +2,10 @@
 #define element_h
 
 #include <stdio.h>
-
-#define STACK_SIZE 10
+#include "stack.h"
 
 // Element Types
-typedef enum {
+typedef enum State {
     P,
     H1,
     H2,
@@ -26,7 +25,7 @@ typedef enum {
 typedef struct Element
 {
     int ec;         // Count of sub elements
-    Stack states;
+    Stack *states;
     struct Element *prev_el;
     struct Element *next_el;
     char *str;

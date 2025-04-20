@@ -5,7 +5,7 @@
 #include "el_array.h"
 
 int main (int argc, char *argv[] ) {
-    char* str = "#This is a markdown string *woohoo*!\nHere is another paragraph\n";
+    char* str = "#This is a markdown string *woohoo*!\nHere is another paragraph\0";
 
     Doc *d = doc_init(str);
 

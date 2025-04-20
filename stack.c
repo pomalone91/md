@@ -4,8 +4,8 @@
 #include "stack.h"
 
 // Initialize a new stack
-struct Stack stack_init() {
-    struct Stack s = {2, -1, malloc(sizeof(State) * 2)};
+struct Stack* stack_init() {
+    struct Stack *s = {2, -1, malloc(sizeof(State) * 2)};
     // s.stack_size = 2;
     // s.stack_top = -1;
     // s.stack_states = malloc(sizeof(State) * 2);

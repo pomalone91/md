@@ -45,8 +45,7 @@ Doc* doc_init(char *str) {
     Doc *d = malloc(sizeof(Doc));
     // d->element = malloc(sizeof(Element));
     d->ea = el_array_init();
-    Stack *stack = malloc(sizeof(Stack));
-    *stack = stack_init();
+    Stack *stack = stack_init();
     size_t doc_len = strlen(str);
 
     d->str = malloc(sizeof(char) * doc_len);
@@ -62,13 +61,13 @@ Doc* doc_init(char *str) {
     while (str[i] != '\0')
     {
         // Handle paragraphs
-        if (!is_special_char(str[i]) && stack->stack_top < 0) {
+        if (!is_special_char(str[i]) /*&& stack->stack_top < 0*/) {
             stack_push(stack, P);
             syb_len = 0;
 
             // Scan ahead
             j = i + 1;
-            while (!is_special_char(str[i]))
+            while (!is_special_char(str[j]))
             {
                 j++;
             }
@@ -81,7 +80,7 @@ Doc* doc_init(char *str) {
             // Need to capture an array of states in the element since you could have nested states
             // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
             Element *e = element_init(el_str, strlen(el_str), stack);
-
+            // TODO - why does this reset the stack when I use this function?
             el_array_append(&d->ea, *e);
             d->ec++;
 
@@ -90,6 +89,7 @@ Doc* doc_init(char *str) {
             j = 0;
             syb_len = 0;
         } 
+        i++;
     }
 }
 
