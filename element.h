@@ -4,36 +4,16 @@
 #include <stdio.h>
 #include "stack.h"
 
-// Element Types
-typedef enum State {
-    P,
-    H1,
-    H2,
-    H3,
-    H4,
-    H5,
-    H6,
-    NL,
-    BOLD,
-    ITALIC,
-    URL,
-    IMG,
-    ERROR = 9999
-} State;
-
 // Element
 typedef struct Element
 {
-    int ec;         // Count of sub elements
     Stack *states;
-    struct Element *prev_el;
-    struct Element *next_el;
     char *str;
 } Element;
 
 // Functions
-Element* element_init(const char *str, size_t str_len, Stack *st);
-Element* element_get_first_sub_element(Element *e);
-void element_free(Element *e);
+Element* element_init(const char *str, size_t str_len, struct Stack *st);
+void element_dump(const struct Element* self);
+void element_free(struct Element* self);
 
 #endif /*element_h*/

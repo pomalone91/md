@@ -14,8 +14,6 @@
 */
 Element* element_init(const char *str, size_t str_len, Stack *st) {
     Element *e = malloc(sizeof(Element));
-    
-    
 
     // Copy the passed string to this elements string attribute
     e->str = malloc(sizeof(char) * str_len);
@@ -23,20 +21,20 @@ Element* element_init(const char *str, size_t str_len, Stack *st) {
 
     // Do stack stuff.
     e->states = stack_init();
-
-    for (int i = 0; i < st->stack_top; i++)
+    for (int i = 0; i < st->top; i++)
     {
-        stack_push(&e->states, *(st->stack_states + i));
+        stack_push(e->states, *(st->states + i));
     }
 
     return e;
 }
 
+void element_dump(const struct Element* self) {
+    printf("%s\n", self->str);
+    stack_dump_states(self->states);
+}
+
 void element_free(Element *e) {
-    e->ec = 0;
-    e->next_el = NULL;
-    e->prev_el = NULL;
-    stack_free(&e->states);
-    free(e->str);
+    stack_free(e->states);
     free(e);
 }
