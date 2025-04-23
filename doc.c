@@ -1,105 +1,121 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <stdbool.h>
-// #include "doc.h"
-// #include "element.h"
-// #include "stack.h"
-// #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
-// bool is_special_char(char c) {
-//     bool special;
-//     switch (c)
-//     {
-//     case '#':
-//         special = true;
-//         break;
-//     case '\n':
-//         special = true;
-//         break;
-//     case '*':
-//         special = true;
-//         break;
-//     case '[':
-//         special = true;
-//         break;
-//     case ']':
-//         special = true;
-//         break;
-//     case '(':
-//         special = true;
-//         break;
-//     case ')':
-//         special = true;
-//         break;
-//     case '_':
-//         special = true;
-//     default:
-//         special = false;
-//         break;
-//     }
-//     return special;
-// }
+#include "stack.h"
+#include "element.h"
+#include "element_list.h"
+#include "doc.h"
+
+bool is_special_char(char c) {
+    bool special;
+    switch (c)
+    {
+    case '#':
+        special = true;
+        break;
+    case '\n':
+        special = true;
+        break;
+    case '*':
+        special = true;
+        break;
+    case '[':
+        special = true;
+        break;
+    case ']':
+        special = true;
+        break;
+    case '(':
+        special = true;
+        break;
+    case ')':
+        special = true;
+        break;
+    case '_':
+        special = true;
+    default:
+        special = false;
+        break;
+    }
+    return special;
+}
 
 
-// Doc* doc_init(char *str) {
-//     Doc *d = malloc(sizeof(Doc));
-//     // d->element = malloc(sizeof(Element));
-//     d->ea = el_array_init();
-//     Stack *stack = stack_init();
-//     size_t doc_len = strlen(str);
+Doc* doc_init(char *str) {
+    Doc *d = malloc(sizeof(Doc));
+    // d->element = malloc(sizeof(Element));
+    d->element_list = element_list_init();
+    Stack *stack_of_states = stack_init();
+    size_t doc_len = strlen(str);
 
-//     d->str = malloc(sizeof(char) * doc_len);
-//     strcpy(d->str, str);
+    // Build doc string
+    d->str = malloc(sizeof(char) * doc_len);
+    strcpy(d->str, str);
 
-//     d->ec = 0;
+    d->element_count = 0;
 
-//     // Start scanning for symbols
-//     int i = 0;
-//     int j = 0;
-//     int syb_len = 0;    // 0 for paragraphs, 1 for #, 2 for ## etc.
-    
-//     while (str[i] != '\0')
-//     {
-//         // Handle paragraphs
-//         if (!is_special_char(str[i]) /*&& stack->stack_top < 0*/) {
-//             stack_push(stack, P);
-//             syb_len = 0;
+    // Start scanning for symbols
+    int i = 0;
+    int j = 0;
+    int syb_len = 0;    // 0 for paragraphs, 1 for #, 2 for ## etc.
 
-//             // Scan ahead
-//             j = i + 1;
-//             while (!is_special_char(str[j]))
-//             {
-//                 j++;
-//             }
+    while (str[i] != '\0')
+    {
+        // Handle paragraphs
+        if (!is_special_char(str[i]) && stack_of_states->top < 0) {
+            stack_push(stack_of_states, P);
+            syb_len = 0;
 
-//             char* el_str = malloc(sizeof(char) * (doc_len - j));
+            // Scan ahead
+            j = i + 1;
+            while (str[j] != '\0')
+            {
+                if (str[j] == '\n')
+                    break;
+                
+                j++;
+            }
+
+            char* el_str = malloc(sizeof(char) * (doc_len - j));
             
-//             // Copy from where i is to where j found the end. Offset by the symbol length so we don't copy #s and such into the string. 
-//             strncpy(el_str, str + i + syb_len, j - i);
-//             // Initialize element
-//             // Need to capture an array of states in the element since you could have nested states
-//             // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
-//             Element *e = element_init(el_str, strlen(el_str), stack);
-//             // TODO - why does this reset the stack when I use this function?
-//             el_array_append(&d->ea, *e);
-//             d->ec++;
+            // Copy from where i is to where j found the end. Offset by the symbol length so we don't copy #s and such into the string. 
+            strncpy(el_str, str + i + syb_len, j - i);
+            // Initialize element
+            // Need to capture an array of states in the element since you could have nested states
+            // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
+            Element *e = element_init(el_str, strlen(el_str), stack_of_states);
+            // TODO - why does this reset the stack when I use this function?
+            element_list_append(d->element_list, *e);
+            d->element_count++;
 
-//             // Reset indices and continue loop. i now points past the end of that last element
-//             i = j++;
-//             j = 0;
-//             syb_len = 0;
-//         } 
-//         i++;
-//     }
-// }
+            // Reset indices and continue loop. i now points past the end of that last element
+            i = j++;
+            j = 0;
+            syb_len = 0;
+            stack_pop(stack_of_states);
+            free(el_str);
+        } 
+        i++;
+    }
 
-// Element* doc_get_first_element(Doc *d) {
-//     return d->ea.element;
-// }
+    return d;
+}
 
-// void doc_free(Doc *d) {
-//     el_array_free(&d->ea);
-//     d->ec = 0;
-//     free(d->str);
-//     free(d);
-// }
+Element* doc_get_first_element(Doc* self) {
+    return self->element_list->element;
+}
+
+void doc_free(Doc* self) {
+    element_list_free(self->element_list);
+    self->element_list = NULL;
+
+    self->element_count = 0;
+
+    free(self->str);
+    self->str = NULL;
+
+    free(self);
+    self = NULL;
+}
