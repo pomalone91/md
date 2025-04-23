@@ -5,6 +5,8 @@
 #include "element.h"
 #include "stack.h"
 
+#define BASE_STR_SIZE 10
+
 // Initialize new element
 /*
     This doesn't actually really need an algorithm. It only needs to do two things.
@@ -12,7 +14,16 @@
     2. Copy the states passed to it from the document.
         - States should be copied by value, not just the pointer so that they don't get changed by mistake.
 */
-Element* element_init(const char *str, size_t str_len, Stack *st) {
+
+Element* element_init() {
+    Element *e = malloc(sizeof(Element));
+    e->states = stack_init();
+    e->str = malloc(sizeof(char) * BASE_STR_SIZE);
+
+    return e;
+}
+
+Element* element_init_with_components(const char *str, size_t str_len, Stack *st) {
     Element *e = malloc(sizeof(Element));
 
     // Copy the passed string to this elements string attribute
@@ -34,7 +45,19 @@ void element_dump(const struct Element* self) {
     stack_dump_states(self->states);
 }
 
-void element_free(Element *e) {
-    stack_free(e->states);
-    free(e);
+void element_free(Element* self) {
+    if (self->states != NULL)
+    {
+        stack_free(self->states);
+        self->states = NULL;
+    }
+    
+    if (self->str != NULL)
+    {
+        free(self->str);
+        self->str = NULL;
+    }
+    
+    free(self);
+    self = NULL;
 }

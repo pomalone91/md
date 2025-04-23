@@ -11,7 +11,7 @@ struct ElementList* element_list_init() {
     return el;
 }
 
-// Appcount a new element to array
+// Append a new element to array
 void element_list_append(struct ElementList* self, Element e) {
     // If count is same as size we need to double the allocated memory.
     if (self->count == self->size)
@@ -20,8 +20,17 @@ void element_list_append(struct ElementList* self, Element e) {
         self->element = realloc(self->element, sizeof(Element) * self->size);
     }
 
-    // Appcount to the count of the array
-    *(self->element + self->count) = e;
+    // Append to the end of the array
+    (self->element + self->count)->str = malloc(sizeof(char));
+    strcpy((self->element + self->count)->str, e.str);
+    (self->element + self->count)->states = stack_init();
+
+    // Copy the stack
+    for (int i = 0; i < e.states->top; i++)
+    {
+        stack_push((self->element + self->count)->states, *(e.states->states + i));
+    }
+
     self->count++;
 }
 
@@ -33,11 +42,13 @@ void element_list_dump(const struct ElementList* self) {
 }
 
 void element_list_free(struct ElementList* self) {
-    if (self->element != NULL)
+    if (self->element)
     {
         element_free(self->element);
+        self->element = NULL;
     }
     self->count = 0;
     self->size = 0;
     free(self);
+    self = NULL;
 }

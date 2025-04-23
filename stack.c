@@ -55,17 +55,20 @@ State stack_peek(struct Stack* self) {
 }
 
 void stack_free(struct Stack* self) {
+        
     self->size = 0;
     self->top = 0;
-
-    // Free each state in array
-    for (size_t i = 0; i < self->size; i++)
+    if (self->states)
     {
-        free(self->states + i);
+        free(self->states);
+        self->states = NULL;
     }
     
-    // Free the pointer to the array
-    free(self->states);
+    if (self)
+    {
+        free(self);
+        self = NULL;
+    }
 }
 
 void stack_dump_states(Stack* self) {

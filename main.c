@@ -22,15 +22,15 @@ int main (int argc, char *argv[] ) {
     // s->dump_states(s);
 
     char* str = "This is a string";
-    Element *e1 = element_init(str, strlen(str), s);
+    Element *e1 = element_init_with_components(str, strlen(str), s);
 
     stack_push(s, BOLD);
 
     char* str2 = "Another string";
-    Element *e2 = element_init(str, strlen(str2), s);
+    Element *e2 = element_init_with_components(str2, strlen(str2), s);
 
-    // element_dump(e1);
-    // element_dump(e2);
+    element_dump(e1);
+    element_dump(e2);
 
     ElementList *el = element_list_init();
     element_list_append(el, *e1);
