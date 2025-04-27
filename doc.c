@@ -44,16 +44,20 @@ bool is_special_char(char c) {
 
 
 Doc* doc_init(char *str) {
-    Doc *d = malloc(sizeof(Doc));
-    // d->element = malloc(sizeof(Element));
-    d->element_list = element_list_init();
+
     Stack *stack_of_states = stack_init();
     size_t doc_len = strlen(str);
+
+    Doc *d = malloc(sizeof(Doc));
 
     // Build doc string
     d->str = malloc(sizeof(char) * doc_len);
     strcpy(d->str, str);
 
+    // d->element = malloc(sizeof(Element));
+    d->element_list = element_list_init();
+        //d->element_list->element->states = stack_of_states;
+    
     d->element_count = 0;
 
     // Start scanning for symbols
@@ -77,15 +81,24 @@ Doc* doc_init(char *str) {
                 
                 j++;
             }
-
-            char* el_str = malloc(sizeof(char) * (doc_len - j));
+            if (i - j == 0)
+                break;
+            char* el_str = calloc(j - i + 1, sizeof(char));
             
             // Copy from where i is to where j found the end. Offset by the symbol length so we don't copy #s and such into the string. 
             strncpy(el_str, str + i + syb_len, j - i);
+            el_str[j - i + 1] = '\0';
+            //int h = 0;
+            // This loop is to check what chars are actually going into the string 
+            //while (h < j - i + 1) {
+            //    char c = el_str[h];
+            //    c ? printf("%c ", c) : printf("\\0 ");
+            //    h++;
+            //}
             // Initialize element
             // Need to capture an array of states in the element since you could have nested states
             // We need to copy the actual values so that they persist for just that element since the parent or child elements will have different stacks.
-            Element *e = element_init(el_str, strlen(el_str), stack_of_states);
+            Element *e = element_init_with_components(el_str, strlen(el_str), stack_of_states);
             // TODO - why does this reset the stack when I use this function?
             element_list_append(d->element_list, *e);
             d->element_count++;

@@ -7,7 +7,8 @@ struct ElementList* element_list_init() {
     ElementList *el = malloc(sizeof(ElementList));
     el->size = 2;
     el->count = 0;
-    el->element = malloc(sizeof(ElementList) * 2);
+    //el->element = malloc(sizeof(Element) * 2);
+    el->element = element_init();
     return el;
 }
 
@@ -23,10 +24,11 @@ void element_list_append(struct ElementList* self, Element e) {
     // Append to the end of the array
     (self->element + self->count)->str = malloc(sizeof(char));
     strcpy((self->element + self->count)->str, e.str);
-    (self->element + self->count)->states = stack_init();
+    if ((self->element + self->count)->states == NULL) 
+        (self->element + self->count)->states = stack_init();
 
     // Copy the stack
-    for (int i = 0; i < e.states->top; i++)
+    for (int i = 0; i <= e.states->top; i++)
     {
         stack_push((self->element + self->count)->states, *(e.states->states + i));
     }

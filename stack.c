@@ -4,7 +4,7 @@
 
 // Initialize a new stack
 struct Stack* stack_init() {
-    struct Stack *s = malloc(sizeof(Stack));
+    struct Stack *s = malloc(sizeof(Stack) * 2);
     s->size = 2;
     s->top = -1;
     s->states = malloc(sizeof(State) * 2);

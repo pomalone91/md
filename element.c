@@ -32,7 +32,7 @@ Element* element_init_with_components(const char *str, size_t str_len, Stack *st
 
     // Do stack stuff.
     e->states = stack_init();
-    for (int i = 0; i < st->top; i++)
+    for (int i = 0; i <= st->top; i++)
     {
         stack_push(e->states, *(st->states + i));
     }
