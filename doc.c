@@ -88,6 +88,7 @@ Doc* doc_init(char *str) {
             // Copy from where i is to where j found the end. Offset by the symbol length so we don't copy #s and such into the string. 
             strncpy(el_str, str + i + syb_len, j - i);
             el_str[j - i + 1] = '\0';
+            // Testing gcm
             //int h = 0;
             // This loop is to check what chars are actually going into the string 
             //while (h < j - i + 1) {
