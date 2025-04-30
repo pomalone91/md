@@ -110,6 +110,7 @@ Doc* doc_init(char *str) {
             syb_len = 0;
             stack_pop(stack_of_states);
             free(el_str);
+            element_free(e);
         } 
         i++;
     }

@@ -5,7 +5,7 @@
 // Initialize a new array
 struct ElementList* element_list_init() {
     ElementList *el = malloc(sizeof(ElementList));
-    el->size = 2;
+    el->size = 1;
     el->count = 0;
     //el->element = malloc(sizeof(Element) * 2);
     el->element = element_init();
@@ -18,14 +18,18 @@ void element_list_append(struct ElementList* self, Element e) {
     if (self->count == self->size)
     {
         self->size *= 2;
-        self->element = realloc(self->element, sizeof(Element) * self->size);
+        int temp_size = self->size;
+        size_t allocation_size = sizeof(Element) * temp_size;
+        Element *realloced_element = realloc(self->element, 4096);
+        self->element = realloced_element;
     }
 
     // Append to the end of the array
     (self->element + self->count)->str = malloc(sizeof(char));
     strcpy((self->element + self->count)->str, e.str);
     if ((self->element + self->count)->states == NULL) 
-        (self->element + self->count)->states = stack_init();
+        (self->element + self->count)->states = realloc((self->element + self->count)->states, sizeof(Stack));
+    (self->element + self->count)->states = stack_init();
 
     // Copy the stack
     for (int i = 0; i <= e.states->top; i++)
