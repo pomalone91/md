@@ -110,10 +110,15 @@ Doc* doc_init(char *str) {
             syb_len = 0;
             stack_pop(stack_of_states);
             free(el_str);
+            el_str = NULL;
             element_free(e);
+            e = NULL;
         } 
         i++;
     }
+
+    stack_free(stack_of_states);
+    stack_of_states = NULL;
 
     return d;
 }

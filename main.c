@@ -7,6 +7,7 @@ int main (int argc, char *argv[] ) {
     Doc *d = doc_init(str);
     
     element_list_dump(d->element_list);
+    doc_free(d);
 /**********************************************************/
     //Stack *s = stack_init();
     //stack_push(s, P);
@@ -25,13 +26,13 @@ int main (int argc, char *argv[] ) {
     //char* str3 = "E3";
     //Element *e3 = element_init_with_components(str3, strlen(str3), s);
 
-    //char* str4 = "E3";
+    //char* str4 = "E4";
     //Element *e4 = element_init_with_components(str3, strlen(str3), s);
 
-    //char* str5 = "E3";
+    //char* str5 = "E5";
     //Element *e5 = element_init_with_components(str3, strlen(str3), s);
 
-    //char* str6 = "E3";
+    //char* str6 = "E6";
     //Element *e6 = element_init_with_components(str3, strlen(str3), s);
 
     //// element_dump(e1);

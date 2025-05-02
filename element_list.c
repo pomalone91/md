@@ -18,24 +18,33 @@ void element_list_append(struct ElementList* self, Element e) {
     if (self->count == self->size)
     {
         self->size *= 2;
-        int temp_size = self->size;
-        size_t allocation_size = sizeof(Element) * temp_size;
-        Element *realloced_element = realloc(self->element, 4096);
-        self->element = realloced_element;
+        size_t allocation_size = sizeof(Element) * self->size;
+        Element *temp_element = realloc(self->element, sizeof(Element) * allocation_size);
+        if (temp_element) {
+            self->element = temp_element;
+        } else {
+            printf("Error reallocating element_list\n");
+            return;
+        }
     }
 
     // Append to the end of the array
-    (self->element + self->count)->str = malloc(sizeof(char));
-    strcpy((self->element + self->count)->str, e.str);
-    if ((self->element + self->count)->states == NULL) 
-        (self->element + self->count)->states = realloc((self->element + self->count)->states, sizeof(Stack));
-    (self->element + self->count)->states = stack_init();
+    //(self->element + self->count)->str = malloc(sizeof(char));
+    //strcpy((self->element + self->count)->str, e.str);
+    //if ((self->element + self->count)->states == NULL) 
+    //    if(((self->element + self->count)->states = realloc((self->element + self->count)->states, sizeof(Stack))) == NULL) {
+    //        printf("Error reallocating states of an element in element_list\n");
+    //        return;
+    //    }
+    //(self->element + self->count)->states = stack_init();
 
-    // Copy the stack
-    for (int i = 0; i <= e.states->top; i++)
-    {
-        stack_push((self->element + self->count)->states, *(e.states->states + i));
-    }
+    //// Copy the stack
+    //for (int i = 0; i <= e.states->top; i++)
+    //{
+    //    stack_push((self->element + self->count)->states, *(e.states->states + i));
+    //}
+    //(self->element + self->count) = *element_init_with_components(e.str, e.str_len, e.states);
+    element_set_with_compontents((self->element + self->count), e.str, e.str_len, e.states);
 
     self->count++;
 }
@@ -52,6 +61,16 @@ void element_list_free(struct ElementList* self) {
     {
         element_free(self->element);
         self->element = NULL;
+        //// Loop through all the elements
+        //int i = self->count - 1;
+        //while (i >= 0) {
+        //    element_free(self->element + i);
+        //    //free(self->element);
+        //    //self->element = NULL;
+        //    i--;
+        //}
+        ////element_free(self->element);
+        ////self->element = NULL;
     }
     self->count = 0;
     self->size = 0;
